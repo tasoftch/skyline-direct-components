@@ -1,6 +1,8 @@
 {
-  "name": "tasoft/phpstorm-template",
-  "license": "MIT",
+  "name": "skyline/direct-components",
+  "description": "Direct component access plugin for Skyline CMS Applications",
+  "license": "BSD-3-Clause",
+  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Thomas Abplanalp",
@@ -9,11 +11,13 @@
   ],
   "autoload": {
     "psr-4": {
-      "TASoft\\" : "src"
+      "Skyline\\Component" : "src"
     }
   },
   "require" : {
-    "php": "^7.2"
+    "php": "^7.2",
+    "skyline/html-elements": "dev-master",
+    "skyline/html-render": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^6"
