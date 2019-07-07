@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Skyline\\Component" : "src"
+      "Skyline\\Component\\" : "src"
     }
   },
   "require" : {
