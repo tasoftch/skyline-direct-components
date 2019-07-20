@@ -25,7 +25,7 @@ use Skyline\Component\Plugin\DeliveryPlugin;
 use Skyline\Kernel\Config\PluginConfig;
 
 return [
-    [
+    'direct-component' => [
         PluginConfig::PLUGIN_EVENT_SECTION => PluginConfig::EVENT_SECTION_CONTROL,
         PluginConfig::PLUGIN_EVENT_NAME => SKY_EVENT_BOOTSTRAP,
 
