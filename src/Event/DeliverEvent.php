@@ -51,6 +51,9 @@ class DeliverEvent extends Event
     /** @var Config */
     private $configuration;
 
+    /** @var array */
+    private $attributes = [];
+
     /**
      * DeliverEvent constructor.
      * @param Request $request
@@ -93,5 +96,21 @@ class DeliverEvent extends Event
     public function setResponse(?Response $response): void
     {
         $this->response = $response;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    public function setAttribute(string $name, $value) {
+        $this->attributes[$name] = $value;
+    }
+
+    public function getAttribute(string $name) {
+        return $this->attributes[$name] ?? NULL;
     }
 }

@@ -36,42 +36,28 @@ namespace Skyline\Component\Plugin;
 
 
 use Skyline\Component\Event\DeliverEvent;
-use Skyline\Kernel\Config\PluginConfig;
-use Skyline\Kernel\Event\BootstrapEvent;
-use Skyline\Kernel\Service\SkylineServiceManager;
-use Symfony\Component\HttpFoundation\Request;
-use TASoft\EventManager\SectionEventManager;
 
-class InitializeDeliveryPlugin
+class DeliverResourcePlugin
 {
-    private $resourceRoot = "/";
+    private $resourceDir;
 
-    public function __construct($resourceRoot = '/')
+    public function __construct($resourceDir)
     {
-        $this->resourceRoot = $resourceRoot;
+        $this->resourceDir = $resourceDir;
     }
 
-    public function initializeResourceDelivery(string $eventName, BootstrapEvent $event, $eventManager, ...$arguments)
+
+
+    public function deliverResource(string $eventName, DeliverEvent $event, $eventManager, ...$arguments)
     {
-        if($eventName == SKY_EVENT_BOOTSTRAP) {
-            if(strcasecmp(substr($_SERVER["REQUEST_URI"], 0, strlen($this->getResourceRoot())), $this->getResourceRoot()) == 0) {
-                $request = Request::createFromGlobals();
-                $event = new DeliverEvent($request, $event->getConfiguration());
 
-                $eventManager = SkylineServiceManager::getEventManager();
-
-                $eventManager->trigger(SKY_EVENT_DC_DELIVER, $event);
-                $eventManager->trigger(SKY_EVENT_TEAR_DOWN);
-                exit();
-            }
-        }
     }
 
     /**
      * @return string
      */
-    public function getResourceRoot(): string
+    public function getResourceDir()
     {
-        return $this->resourceRoot;
+        return $this->resourceDir;
     }
 }

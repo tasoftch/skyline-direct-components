@@ -36,42 +36,11 @@ namespace Skyline\Component\Plugin;
 
 
 use Skyline\Component\Event\DeliverEvent;
-use Skyline\Kernel\Config\PluginConfig;
-use Skyline\Kernel\Event\BootstrapEvent;
-use Skyline\Kernel\Service\SkylineServiceManager;
-use Symfony\Component\HttpFoundation\Request;
-use TASoft\EventManager\SectionEventManager;
 
-class InitializeDeliveryPlugin
+class CacheControlPlugin
 {
-    private $resourceRoot = "/";
-
-    public function __construct($resourceRoot = '/')
+    public function checkIfNotModified(string $eventName, DeliverEvent $event, $eventManager, ...$arguments)
     {
-        $this->resourceRoot = $resourceRoot;
-    }
 
-    public function initializeResourceDelivery(string $eventName, BootstrapEvent $event, $eventManager, ...$arguments)
-    {
-        if($eventName == SKY_EVENT_BOOTSTRAP) {
-            if(strcasecmp(substr($_SERVER["REQUEST_URI"], 0, strlen($this->getResourceRoot())), $this->getResourceRoot()) == 0) {
-                $request = Request::createFromGlobals();
-                $event = new DeliverEvent($request, $event->getConfiguration());
-
-                $eventManager = SkylineServiceManager::getEventManager();
-
-                $eventManager->trigger(SKY_EVENT_DC_DELIVER, $event);
-                $eventManager->trigger(SKY_EVENT_TEAR_DOWN);
-                exit();
-            }
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getResourceRoot(): string
-    {
-        return $this->resourceRoot;
     }
 }

@@ -32,6 +32,8 @@
  *
  */
 
+use Skyline\Component\Plugin\CacheControlPlugin;
+use Skyline\Component\Plugin\DeliverResourcePlugin;
 use Skyline\Component\Plugin\InitializeDeliveryPlugin;
 use Skyline\Kernel\Config\PluginConfig;
 
@@ -45,6 +47,19 @@ return [
             'resourceRoot' => '/Public'
         ],
         PluginConfig::PLUGIN_METHOD => 'initializeResourceDelivery',
+        PluginConfig::PLUGIN_PRIORITY => 100
+    ],
+
+    // Deliver resource plugins
+
+    "dc-deliver" => [
+        PluginConfig::PLUGIN_EVENT_NAME => SKY_EVENT_DC_DELIVER,
+
+        PluginConfig::PLUGIN_CLASS => DeliverResourcePlugin::class,
+        PluginConfig::PLUGIN_METHOD => 'deliverResource',
+        PluginConfig::PLUGIN_ARGUMENTS => [
+            'resourceDir' => '$(/)/Components'
+        ],
         PluginConfig::PLUGIN_PRIORITY => 100
     ]
 ];
