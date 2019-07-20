@@ -12,7 +12,10 @@
   "autoload": {
     "psr-4": {
       "Skyline\\Component\\" : "src"
-    }
+    },
+    "files": [
+      "src/Constants.php"
+    ]
   },
   "require" : {
     "php": "^7.2",

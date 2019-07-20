@@ -35,10 +35,13 @@
 namespace Skyline\Component\Plugin;
 
 
+use Skyline\Component\Event\DeliverEvent;
+use Skyline\Kernel\Config\PluginConfig;
 use Skyline\Kernel\Event\BootstrapEvent;
 use Symfony\Component\HttpFoundation\Request;
+use TASoft\EventManager\SectionEventManager;
 
-class DeliveryPlugin
+class InitializeDeliveryPlugin
 {
     private $resourceRoot = "/";
 
@@ -47,13 +50,16 @@ class DeliveryPlugin
         $this->resourceRoot = $resourceRoot;
     }
 
-    public function deliverResource(string $eventName, BootstrapEvent $event, $eventManager, ...$arguments)
+    public function initializeResourceDelivery(string $eventName, BootstrapEvent $event, SectionEventManager $eventManager, ...$arguments)
     {
         if($eventName == SKY_EVENT_BOOTSTRAP) {
             if(strcasecmp(substr($_SERVER["REQUEST_URI"], 0, strlen($this->getResourceRoot())), $this->getResourceRoot()) == 0) {
                 $request = Request::createFromGlobals();
+                $event = new DeliverEvent($request, $event->getConfiguration());
 
-
+                $eventManager->triggerSection( PluginConfig::EVENT_SECTION_BOOTSTRAP, SKY_EVENT_DC_DELIVER, $event);
+                $eventManager->trigger(SKY_EVENT_TEAR_DOWN);
+                exit();
             }
         }
     }

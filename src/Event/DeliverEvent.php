@@ -32,19 +32,66 @@
  *
  */
 
-use Skyline\Component\Plugin\InitializeDeliveryPlugin;
-use Skyline\Kernel\Config\PluginConfig;
+namespace Skyline\Component\Event;
 
-return [
-    'direct-component' => [
-        PluginConfig::PLUGIN_EVENT_SECTION => PluginConfig::EVENT_SECTION_BOOTSTRAP,
-        PluginConfig::PLUGIN_EVENT_NAME => SKY_EVENT_BOOTSTRAP,
 
-        PluginConfig::PLUGIN_CLASS => InitializeDeliveryPlugin::class,
-        PluginConfig::PLUGIN_ARGUMENTS => [
-            'resourceRoot' => '/Public'
-        ],
-        PluginConfig::PLUGIN_METHOD => 'initializeResourceDelivery',
-        PluginConfig::PLUGIN_PRIORITY => 100
-    ]
-];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use TASoft\Config\Config;
+use TASoft\EventManager\Event\Event;
+
+class DeliverEvent extends Event
+{
+    /** @var Request */
+    private $request;
+
+    /** @var Response|null */
+    private $response;
+
+    /** @var Config */
+    private $configuration;
+
+    /**
+     * DeliverEvent constructor.
+     * @param Request $request
+     * @param Response $response
+     * @param Config $configuration
+     */
+    public function __construct(Request $request, Config $configuration)
+    {
+        $this->request = $request;
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse(): ?Response
+    {
+        return $this->response;
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfiguration(): Config
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @param Response|null $response
+     */
+    public function setResponse(?Response $response): void
+    {
+        $this->response = $response;
+    }
+}
