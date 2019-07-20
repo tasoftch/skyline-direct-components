@@ -19,7 +19,7 @@
     "skyline/html-elements": "dev-master",
     "leafo/scssphp": "dev-master",
     "tasoft/config": "dev-master",
-    "skyline/core-application": "dev-master"
+    "skyline/kernel": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^6"

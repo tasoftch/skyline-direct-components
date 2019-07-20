@@ -32,31 +32,4 @@
  *
  */
 
-namespace Skyline\Component\Config;
-
-
-use Skyline\HTML\Head\Script;
-use TASoft\Config\Config;
-
-class JavaScriptComponent extends AbstractLinkedComponent
-{
-    protected function getComponentElementClassName(): string
-    {
-        return Script::class;
-    }
-
-    public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL)
-    {
-        parent::__construct($link, $crossOrigin, $integrity);
-    }
-
-    protected function getComponentElementArguments(Config $config): ?array
-    {
-        return [
-            $config["l"],
-            Script::TYPE_JAVASCRIPT,
-            $config["i"],
-            $config["co"],
-        ];
-    }
-}
+define("SKY_EVENT_DC_DELIVER", "skyline.direct-component.deliver");
