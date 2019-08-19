@@ -35,28 +35,12 @@
 namespace Skyline\Component\Config;
 
 
-use Skyline\HTML\Head\RemoteSourceScript;
-use TASoft\Config\Config;
+use Skyline\HTML\Head\PostScript;
 
-class JavaScriptComponent extends AbstractLinkedComponent
+class JavaScriptPostLoadComponent extends JavaScriptComponent
 {
     protected function getComponentElementClassName(): string
     {
-        return RemoteSourceScript::class;
-    }
-
-    public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL)
-    {
-        parent::__construct($link, $crossOrigin, $integrity);
-    }
-
-    protected function getComponentElementArguments(Config $config): ?array
-    {
-        return [
-            $config["l"],
-            RemoteSourceScript::TYPE_JAVASCRIPT,
-            $config["i"],
-            $config["co"],
-        ];
+        return PostScript::class;
     }
 }
