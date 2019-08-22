@@ -36,11 +36,11 @@ namespace Skyline\Component\Plugin;
 
 
 use Skyline\Component\Event\DeliverEvent;
-use Skyline\Kernel\Config\PluginConfig;
 use Skyline\Kernel\Event\BootstrapEvent;
 use Skyline\Kernel\Service\SkylineServiceManager;
 use Symfony\Component\HttpFoundation\Request;
-use TASoft\EventManager\SectionEventManager;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class InitializeDeliveryPlugin
 {
@@ -58,10 +58,34 @@ class InitializeDeliveryPlugin
                 $request = Request::createFromGlobals();
                 $event = new DeliverEvent($request, $event->getConfiguration());
 
+                $uri = explode("?", $event->getRequest()->getRequestUri(), 2)[0];
+                $uri = substr($uri, strlen($this->getResourceRoot()));
+                $event->setRequestedFile($uri);
+                
                 $eventManager = SkylineServiceManager::getEventManager();
 
-                $eventManager->trigger(SKY_EVENT_DC_DELIVER, $event);
-                $eventManager->trigger(SKY_EVENT_TEAR_DOWN);
+                try {
+                    $eventManager->trigger(SKY_EVENT_DC_DELIVER, $event);
+                    $eventManager->trigger(SKY_EVENT_TEAR_DOWN);
+                    $response = $event->getResponse();
+                    if(!$response) {
+                        $response = new Response();
+                        $response->setStatusCode(404, "Resource Not Found");
+                    }
+                } catch (Throwable $error) {
+                    $response = $event->getResponse();
+                    if(!$response)
+                        $event->setResponse($response = new Response());
+
+                    $response->setStatusCode(min(599, max(400, $error->getCode())), $error->getMessage());
+                }
+
+                $response->prepare( $event->getRequest() );
+                if($response->isNotModified( $event->getRequest() ))
+                    $response->sendHeaders();
+                else
+                    $response->send();
+
                 exit();
             }
         }

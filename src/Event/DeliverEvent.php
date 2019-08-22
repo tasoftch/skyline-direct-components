@@ -54,6 +54,46 @@ class DeliverEvent extends Event
     /** @var array */
     private $attributes = [];
 
+    /** @var string */
+    private $requestedFile;
+
+    /** @var string|null */
+    private $contentType;
+
+    /**
+     * @return string|null
+     */
+    public function getContentType(): ?string
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param string|null $contentType
+     */
+    public function setContentType(?string $contentType): void
+    {
+        $this->contentType = $contentType;
+    }
+
+
+    
+    /**
+     * @return string
+     */
+    public function getRequestedFile(): string
+    {
+        return $this->requestedFile;
+    }
+
+    /**
+     * @param string $requestedFile
+     */
+    public function setRequestedFile(string $requestedFile): void
+    {
+        $this->requestedFile = $requestedFile;
+    }
+
     /**
      * DeliverEvent constructor.
      * @param Request $request

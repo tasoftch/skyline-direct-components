@@ -41,6 +41,9 @@ class CacheControlPlugin
 {
     public function checkIfNotModified(string $eventName, DeliverEvent $event, $eventManager, ...$arguments)
     {
-
+        if($event->getContentType() && ($path = $event->getRequestedFile())) {
+            $response = $event->getResponse();
+            $response->setEtag( md5_file($path) );
+        }
     }
 }

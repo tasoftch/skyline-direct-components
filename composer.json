@@ -20,9 +20,9 @@
   "require" : {
     "php": "^7.2",
     "skyline/html-elements": "dev-master",
-    "leafo/scssphp": "dev-master",
     "tasoft/config": "dev-master",
-    "skyline/kernel": "dev-master"
+    "skyline/kernel": "dev-master",
+    "tasoft/mime": "^1"
   },
   "require-dev": {
     "phpunit/phpunit": "^6"

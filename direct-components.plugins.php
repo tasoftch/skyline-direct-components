@@ -47,19 +47,37 @@ return [
             'resourceRoot' => '/Public'
         ],
         PluginConfig::PLUGIN_METHOD => 'initializeResourceDelivery',
-        PluginConfig::PLUGIN_PRIORITY => 100
+        PluginConfig::PLUGIN_PRIORITY => 98
     ],
 
     // Deliver resource plugins
+    
+    "dc-cache" => [
+        PluginConfig::PLUGIN_EVENT_NAME => SKY_EVENT_DC_DELIVER,
+        PluginConfig::PLUGIN_CLASS => CacheControlPlugin::class,
+
+        PluginConfig::PLUGIN_EVENT_LISTENERS => [
+            [
+                PluginConfig::PLUGIN_METHOD => 'checkIfNotModified',
+                PluginConfig::PLUGIN_PRIORITY => 100
+            ]
+        ]
+    ],
 
     "dc-deliver" => [
         PluginConfig::PLUGIN_EVENT_NAME => SKY_EVENT_DC_DELIVER,
 
         PluginConfig::PLUGIN_CLASS => DeliverResourcePlugin::class,
-        PluginConfig::PLUGIN_METHOD => 'deliverResource',
         PluginConfig::PLUGIN_ARGUMENTS => [
             'resourceDir' => '$(/)/Components'
         ],
-        PluginConfig::PLUGIN_PRIORITY => 100
+
+        PluginConfig::PLUGIN_EVENT_LISTENERS => [
+            [
+                PluginConfig::PLUGIN_METHOD => 'makeDeliverResponse',
+                PluginConfig::PLUGIN_PRIORITY => 50
+            ]
+        ]
+
     ]
 ];

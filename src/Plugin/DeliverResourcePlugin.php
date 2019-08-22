@@ -36,6 +36,9 @@ namespace Skyline\Component\Plugin;
 
 
 use Skyline\Component\Event\DeliverEvent;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
+use TASoft\Util\Mime;
 
 class DeliverResourcePlugin
 {
@@ -46,11 +49,52 @@ class DeliverResourcePlugin
         $this->resourceDir = $resourceDir;
     }
 
+    public function acceptContentType($type, $types): bool {
+        foreach($types as $_) {
+            if(fnmatch($_, $type))
+                return true;
+        }
+        return false;
+    }
 
-
-    public function deliverResource(string $eventName, DeliverEvent $event, $eventManager, ...$arguments)
+    /**
+     * Event listener
+     *
+     * Checks if a file exists and create response
+     *
+     * @param string $eventName
+     * @param DeliverEvent $event
+     * @param $eventManager
+     * @param mixed ...$arguments
+     */
+    public function makeDeliverResponse(string $eventName, DeliverEvent $event, $eventManager, ...$arguments)
     {
+        if($eventName == SKY_EVENT_DC_DELIVER) {
+            $file = $event->getRequestedFile();
+            $path = $this->getResourceDir() . DIRECTORY_SEPARATOR . $file;
+            if(($p = realpath($path)) && ( ($response = $event->getResponse()) && $response->getStatusCode() < 300 || !$response )) {
+                $ext = explode(".", $path);
+                $ext = array_pop($ext);
 
+                $type = Mime::sharedMime()->getMimeForExtension($ext);
+                if(!$this->acceptContentType($type, $event->getRequest()->getAcceptableContentTypes())) {
+                    $response = $event->getResponse();
+                    if(!$response)
+                        $event->setResponse($response = new Response());
+                    $response->setStatusCode(404, "Resource Not Found");
+                } else {
+                    $event->setContentType($type);
+                    $event->setRequestedFile($p);
+                    $event->setResponse($response = new BinaryFileResponse($p));
+                    $response->headers->set("Content-Type", $type);
+                }
+            } else {
+                $response = $event->getResponse();
+                if(!$response)
+                    $event->setResponse($response = new Response());
+                $response->setStatusCode(404, "Resource Not Found");
+            }
+        }
     }
 
     /**
