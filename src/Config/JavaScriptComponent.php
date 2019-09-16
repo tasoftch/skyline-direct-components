@@ -45,9 +45,9 @@ class JavaScriptComponent extends AbstractLinkedComponent
         return RemoteSourceScript::class;
     }
 
-    public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL)
+    public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL, string $targetFileName = NULL)
     {
-        parent::__construct($link, $crossOrigin, $integrity);
+        parent::__construct($link, $crossOrigin, $integrity, $targetFileName);
     }
 
     protected function getComponentElementArguments(Config $config): ?array
@@ -57,6 +57,7 @@ class JavaScriptComponent extends AbstractLinkedComponent
             RemoteSourceScript::TYPE_JAVASCRIPT,
             $config["i"],
             $config["co"],
+            'file' => $config["f"]
         ];
     }
 }

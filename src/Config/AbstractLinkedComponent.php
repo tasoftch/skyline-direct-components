@@ -37,11 +37,12 @@ namespace Skyline\Component\Config;
 
 abstract class AbstractLinkedComponent extends AbstractComponent
 {
-    public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL)
+    public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL, string $targetFileName = NULL)
     {
         $cfg = $this->getConfig();
         $cfg["l"] = $link;
         $cfg["co"] = $crossOrigin;
         $cfg["i"] = $integrity;
+        $cfg["f"] = $targetFileName;
     }
 }

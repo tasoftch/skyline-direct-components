@@ -43,9 +43,10 @@ class IconComponent extends AbstractLinkedComponent
     const ICON_TYPE_MICROSOFT = 'image/vnd.microsoft.icon'; // Official mime type by IANA. Also allowed is image/x-icon
     const ICON_TYPE_PNG = 'image/png';
 
-    public function __construct($link, string $contentType = NULL, string $integrity = NULL, string $crossOrigin = NULL)
+    public function __construct($link, string $contentType = NULL, string $integrity = NULL, string $crossOrigin = NULL, string $targetFileName = NULL)
     {
-        parent::__construct($link, $integrity, $crossOrigin);
+        parent::__construct($link, $integrity, $crossOrigin, $targetFileName);
+        $this->getConfig()["ctt"] = $contentType;
     }
 
     protected function getComponentElementClassName(): string
@@ -58,9 +59,10 @@ class IconComponent extends AbstractLinkedComponent
         return [
             $config["l"],
             RemoteSourceLink::REL_ICON . " " . RemoteSourceLink::REL_SHORTCUT,
-            $this->getMIMETypeForLink($config["l"]),
+            $config["ctt"] ?? $this->getMIMETypeForLink($config["l"]),
             $config["i"],
             $config["co"],
+            'file' => $config["f"]
         ];
     }
 

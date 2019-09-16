@@ -47,9 +47,9 @@ class CSSComponent extends AbstractLinkedComponent
         return LinkCSS::class;
     }
 
-    public function __construct(string $link, string $media = LinkCSS::MEDIA_ALL, string $integrity = NULL, string $crossOrigin = NULL)
+    public function __construct(string $link, string $media = LinkCSS::MEDIA_ALL, string $integrity = NULL, string $crossOrigin = NULL, string $targetFileName = NULL)
     {
-        parent::__construct($link, $crossOrigin, $integrity);
+        parent::__construct($link, $crossOrigin, $integrity, $targetFileName);
         $this->getConfig()["m"] = $media;
     }
 
@@ -60,6 +60,7 @@ class CSSComponent extends AbstractLinkedComponent
             $config["m"],
             $config["i"],
             $config["co"],
+            'file' => $config["f"]
         ];
     }
 }
