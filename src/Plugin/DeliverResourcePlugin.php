@@ -100,11 +100,8 @@ class DeliverResourcePlugin
                     /** @var HTMLRenderController $rc */
                     $rc = ServiceManager::generalServiceManager()->get("renderController");
                     if ($rc instanceof HTMLRenderController) {
-                        $uri2tg = $rc->getURI2TargetMap();
-                        if ($uri2tg) {
-                            if ($path = $uri2tg[$file] ?? NULL) {
-                                goto repeat;
-                            }
+                        if($path = $rc->getMappedLocalFilename($file, true)) {
+                            goto repeat;
                         }
                     }
                 }
