@@ -44,7 +44,7 @@ return [
 
         PluginConfig::PLUGIN_CLASS => InitializeDeliveryPlugin::class,
         PluginConfig::PLUGIN_ARGUMENTS => [
-            'resourceRoot' => '/Public'
+            'resourceRoot' => '%component.public-uri%'
         ],
         PluginConfig::PLUGIN_METHOD => 'initializeResourceDelivery',
         PluginConfig::PLUGIN_PRIORITY => 98
@@ -69,7 +69,7 @@ return [
 
         PluginConfig::PLUGIN_CLASS => DeliverResourcePlugin::class,
         PluginConfig::PLUGIN_ARGUMENTS => [
-            'resourceDir' => '$(/)/Components'
+            'resourceDir' => '%component.resource-dir%'
         ],
 
         PluginConfig::PLUGIN_EVENT_LISTENERS => [

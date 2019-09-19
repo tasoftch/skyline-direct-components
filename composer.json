@@ -19,8 +19,7 @@
   },
   "require" : {
     "php": "^7.2",
-    "skyline/html-elements": "dev-master",
-    "tasoft/config": "dev-master",
+    "skyline/html-render": "dev-master",
     "skyline/kernel": "dev-master",
     "tasoft/mime": "^1"
   },

@@ -36,8 +36,10 @@ namespace Skyline\Component\Plugin;
 
 
 use Skyline\Component\Event\DeliverEvent;
+use Skyline\HTMLRender\HTMLRenderController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use TASoft\Service\ServiceManager;
 use TASoft\Util\Mime;
 
 class DeliverResourcePlugin
@@ -72,14 +74,17 @@ class DeliverResourcePlugin
         if($eventName == SKY_EVENT_DC_DELIVER) {
             $file = $event->getRequestedFile();
             $path = $this->getResourceDir() . DIRECTORY_SEPARATOR . $file;
+
+            repeat:
+
             if(($p = realpath($path)) && ( ($response = $event->getResponse()) && $response->getStatusCode() < 300 || !$response )) {
                 $ext = explode(".", $path);
                 $ext = array_pop($ext);
 
                 $type = Mime::sharedMime()->getMimeForExtension($ext);
-                if(!$this->acceptContentType($type, $event->getRequest()->getAcceptableContentTypes())) {
+                if (!$this->acceptContentType($type, $event->getRequest()->getAcceptableContentTypes())) {
                     $response = $event->getResponse();
-                    if(!$response)
+                    if (!$response)
                         $event->setResponse($response = new Response());
                     $response->setStatusCode(404, "Resource Not Found");
                 } else {
@@ -89,6 +94,21 @@ class DeliverResourcePlugin
                     $response->headers->set("Content-Type", $type);
                 }
             } else {
+                if(!isset($_repetition)) {
+                    $_repetition = 1;
+
+                    /** @var HTMLRenderController $rc */
+                    $rc = ServiceManager::generalServiceManager()->get("renderController");
+                    if ($rc instanceof HTMLRenderController) {
+                        $uri2tg = $rc->getURI2TargetMap();
+                        if ($uri2tg) {
+                            if ($path = $uri2tg[$file] ?? NULL) {
+                                goto repeat;
+                            }
+                        }
+                    }
+                }
+
                 $response = $event->getResponse();
                 if(!$response)
                     $event->setResponse($response = new Response());
