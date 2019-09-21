@@ -33,6 +33,7 @@
  */
 
 use Skyline\Component\Plugin\CacheControlPlugin;
+use Skyline\Component\Plugin\DeliverPHPScriptPlugin;
 use Skyline\Component\Plugin\DeliverResourcePlugin;
 use Skyline\Component\Plugin\InitializeDeliveryPlugin;
 use Skyline\Kernel\Config\PluginConfig;
@@ -78,6 +79,12 @@ return [
                 PluginConfig::PLUGIN_PRIORITY => 50
             ]
         ]
+    ],
 
+    'dc-run-php' => [
+        PluginConfig::PLUGIN_EVENT_NAME => SKY_EVENT_DC_DELIVER,
+        PluginConfig::PLUGIN_CLASS => DeliverPHPScriptPlugin::class,
+        PluginConfig::PLUGIN_METHOD => 'deliverPHPIfNeeded',
+        PluginConfig::PLUGIN_PRIORITY => 90
     ]
 ];
