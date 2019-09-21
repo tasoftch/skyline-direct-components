@@ -52,6 +52,9 @@ class DeliverResourcePlugin
     }
 
     public function acceptContentType($type, $types): bool {
+        if(!$type)
+            return false;
+
         foreach($types as $_) {
             if(fnmatch($_, $type))
                 return true;
