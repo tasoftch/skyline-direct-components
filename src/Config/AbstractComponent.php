@@ -42,6 +42,7 @@ abstract class AbstractComponent extends AbstractConfigFactory
 {
     const COMP_ELEMENT_CLASS = 'class';
     const COMP_ELEMENT_ARGUMENTS = 'arguments';
+    const COMP_REQUIREMENTS = "@require";
 
     protected function makeConfiguration(Config $configuration): Config
     {
