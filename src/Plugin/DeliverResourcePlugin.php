@@ -56,6 +56,10 @@ class DeliverResourcePlugin
             if(fnmatch($_, $type))
                 return true;
         }
+
+        if(Mime::sharedMime()->getExtensionForMime( $type ) == 'php')
+            return true;
+
         return false;
     }
 
