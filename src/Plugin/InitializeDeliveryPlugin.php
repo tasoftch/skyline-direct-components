@@ -37,6 +37,7 @@ namespace Skyline\Component\Plugin;
 
 use Skyline\Component\Event\DeliverEvent;
 use Skyline\Kernel\Event\BootstrapEvent;
+use Skyline\Kernel\Loader\RequestLoader;
 use Skyline\Kernel\Service\SkylineServiceManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +55,16 @@ class InitializeDeliveryPlugin
     public function initializeResourceDelivery(string $eventName, BootstrapEvent $event, $eventManager, ...$arguments)
     {
         if($eventName == SKY_EVENT_BOOTSTRAP) {
-            if(strcasecmp(substr($_SERVER["REQUEST_URI"], 0, strlen($this->getResourceRoot())), $this->getResourceRoot()) == 0) {
+            if(class_exists(RequestLoader::class)) {
+                /** @var Request $request */
+                $request = RequestLoader::$request;
+                $URI = $request->getRequestUri();
+            } else {
+                $URI = $_SERVER["REQUEST_URI"];
+            }
+
+
+            if(strcasecmp(substr($URI, 0, strlen($this->getResourceRoot())), $this->getResourceRoot()) == 0) {
                 $request = Request::createFromGlobals();
                 $event = new DeliverEvent($request, $event->getConfiguration());
 
