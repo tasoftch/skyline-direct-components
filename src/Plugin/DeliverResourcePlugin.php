@@ -80,7 +80,10 @@ class DeliverResourcePlugin
     {
         if($eventName == SKY_EVENT_DC_DELIVER) {
             $file = $event->getRequestedFile();
-            $path = $this->getResourceDir() . DIRECTORY_SEPARATOR . $file;
+            if($p = $event->getAttribute("absolute_path"))
+                $path = $p;
+            else
+                $path = $this->getResourceDir() . DIRECTORY_SEPARATOR . $file;
 
             repeat:
 
