@@ -2,7 +2,6 @@
   "name": "skyline/direct-components",
   "description": "Direct component access plugin for Skyline CMS Applications",
   "license": "BSD-3-Clause",
-  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Thomas Abplanalp",
@@ -19,8 +18,8 @@
   },
   "require" : {
     "php": "^7.2",
-    "skyline/html-render": "dev-master",
-    "skyline/kernel": "dev-master",
+    "skyline/html-render": "^0.8",
+    "skyline/kernel": "^0.8",
     "tasoft/mime": "^1"
   },
   "require-dev": {
