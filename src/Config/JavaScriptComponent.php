@@ -47,7 +47,7 @@ class JavaScriptComponent extends AbstractLinkedComponent
 
     public function __construct($link, string $integrity = NULL, string $crossOrigin = NULL, string $targetFileName = NULL)
     {
-        parent::__construct($link, $crossOrigin, $integrity, $targetFileName);
+        parent::__construct($link, $integrity, $crossOrigin, $targetFileName);
     }
 
     protected function getComponentElementArguments(Config $config): ?array

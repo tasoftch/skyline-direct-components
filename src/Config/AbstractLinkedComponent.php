@@ -41,7 +41,7 @@ abstract class AbstractLinkedComponent extends AbstractComponent
     {
         $cfg = $this->getConfig();
         $cfg["l"] = $link;
-        $cfg["co"] = $crossOrigin;
+        $cfg["co"] = NULL === $crossOrigin ? ($integrity ? 'anonymous' : NULL) : $crossOrigin;
         $cfg["i"] = $integrity;
         $cfg["f"] = $targetFileName;
     }

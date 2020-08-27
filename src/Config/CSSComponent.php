@@ -49,7 +49,7 @@ class CSSComponent extends AbstractLinkedComponent
 
     public function __construct(string $link, string $media = LinkCSS::MEDIA_ALL, string $integrity = NULL, string $crossOrigin = NULL, string $targetFileName = NULL)
     {
-        parent::__construct($link, $crossOrigin, $integrity, $targetFileName);
+        parent::__construct($link, $integrity, $crossOrigin, $targetFileName);
         $this->getConfig()["m"] = $media;
     }
 
