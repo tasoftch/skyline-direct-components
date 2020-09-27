@@ -35,6 +35,7 @@
 namespace Skyline\Component\Config;
 
 
+use Skyline\Compiler\CompilerContext;
 use TASoft\Config\Compiler\Factory\AbstractConfigFactory;
 use TASoft\Config\Config;
 
@@ -70,4 +71,24 @@ abstract class AbstractComponent extends AbstractConfigFactory
      * @return string
      */
     abstract protected function getComponentElementClassName(): string;
+
+	/**
+	 * Use this method during compilation to generate the right argument list for local components.
+	 *
+	 * @param string $link
+	 * @param $filename
+	 * @param string $integrity
+	 * @param null $crossOrigin
+	 * @param null $media
+	 * @return string[]
+	 */
+	public static function makeLocalFileComponentArguments(string $link, $filename, string $integrity='sha384', $crossOrigin = NULL, $media = NULL) {
+		$args = [$link];
+		if($media)
+			$args[] = $media;
+		$args[] = sprintf("%s-%s", $integrity, base64_encode( hash_file($integrity, $filename, true) ));
+		$args[] = $crossOrigin;
+		$args[] = CompilerContext::getCurrentCompiler()->getRelativeProjectPath( $filename );
+		return $args;
+	}
 }
