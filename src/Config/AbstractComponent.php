@@ -82,7 +82,7 @@ abstract class AbstractComponent extends AbstractConfigFactory
 	 * @param null $media
 	 * @return string[]
 	 */
-	public static function makeLocalFileComponentArguments(string $link, $filename, string $integrity='sha384', $crossOrigin = NULL, $media = NULL) {
+	public static function makeLocalFileComponentArguments(string $link, $filename, ?string $integrity='sha384', $crossOrigin = NULL, $media = NULL) {
 		$args = [$link];
 		if($media)
 			$args[] = $media;
