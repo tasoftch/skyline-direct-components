@@ -86,7 +86,7 @@ abstract class AbstractComponent extends AbstractConfigFactory
 		$args = [$link];
 		if($media)
 			$args[] = $media;
-		$args[] = sprintf("%s-%s", $integrity, base64_encode( hash_file($integrity, $filename, true) ));
+		$args[] = $integrity ? sprintf("%s-%s", $integrity, base64_encode( hash_file($integrity, $filename, true) )) : NULL;
 		$args[] = $crossOrigin;
 		$args[] = CompilerContext::getCurrentCompiler()->getRelativeProjectPath( $filename );
 		return $args;
