@@ -87,7 +87,7 @@ class DeliverResourcePlugin
 
             repeat:
 
-            if(($p = realpath($path)) && ( ($response = $event->getResponse()) && $response->getStatusCode() < 300 || !$response )) {
+            if(is_file($path) && ( ($response = $event->getResponse()) && $response->getStatusCode() < 300 || !$response )) {
                 $ext = explode(".", $path);
                 $ext = array_pop($ext);
 
@@ -99,8 +99,8 @@ class DeliverResourcePlugin
                     $response->setStatusCode(404, "Resource Not Found");
                 } else {
                     $event->setContentType($type);
-                    $event->setRequestedFile($p);
-                    $event->setResponse($response = new BinaryFileResponse($p));
+                    $event->setRequestedFile($path);
+                    $event->setResponse($response = new BinaryFileResponse($path));
                     $response->headers->set("Content-Type", $type);
                 }
             } else {
@@ -111,6 +111,7 @@ class DeliverResourcePlugin
                     $rc = ServiceManager::generalServiceManager()->get("renderController");
                     if ($rc instanceof HTMLRenderController) {
                         if($path = $rc->getMappedLocalFilename($file, true)) {
+							$path = SkyGetRoot() . "/$path";
                             goto repeat;
                         }
                     }
